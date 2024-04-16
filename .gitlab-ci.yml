@@ -9,8 +9,8 @@ build_and_deploy:
    - mkdir /root/.ssh
    - echo "$SSH_PRIVATE_KEY_NODE_DEV" | tr -d '\r' > /root/.ssh/id_rsa
    - chmod 400 /root/.ssh/id_rsa
-   - scp -i "/root/.ssh/id_rsa" -o StrictHostKeyChecking=no ./deploy_dev_script.sh ec2-user@107.21.87.27:./
-   - ssh -i "/root/.ssh/id_rsa" -o StrictHostKeyChecking=no ec2-user@107.21.87.27 "bash -s" < ./deploy_dev_script.sh "$CI_PROJECT_NAME" "$CI_COMMIT_SHORT_SHA" "$CI_COMMIT_REF_NAME"
+   - scp -i "/root/.ssh/id_rsa" -o StrictHostKeyChecking=no ./deploy_dev_script.sh ec2-user@3.80.185.205:./
+   - ssh -i "/root/.ssh/id_rsa" -o StrictHostKeyChecking=no ec2-user@3.80.185.205 "bash -s" < ./deploy_dev_script.sh "$CI_PROJECT_NAME" "$CI_COMMIT_SHORT_SHA" "$CI_COMMIT_REF_NAME"
 
  only:
   - dev
