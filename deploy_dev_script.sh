@@ -48,5 +48,5 @@ else
 fi
   sudo docker run -d --network=backend-nest-pro -p 3000:3000 --name "$CONTAINER_NAME" "$IMAGE_NAME"
 
-  sudo docker images prune -a || true
+  sudo docker image prune -af || true
  # Docker run using folder name as container name
