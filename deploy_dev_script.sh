@@ -30,7 +30,7 @@ if [ $? -eq 0 ]; then
   if [ $? -eq 0 ]; then
     # Docker stop old instance
     echo "Container Name: $CONTAINER_NAME"
-    if sudo docker ps -a --format '{.Names}' | grep -Eq "^$CONTAINER_NAME$"; then
+    if sudo docker ps -a --format '{{.Names}}' | grep -Eq "^$CONTAINER_NAME$"; then
       echo "Stopping existing container: $CONTAINER_NAME"
       sudo docker stop "$CONTAINER_NAME" || true
       echo "Removing existing container: $CONTAINER_NAME"
