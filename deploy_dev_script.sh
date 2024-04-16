@@ -29,6 +29,7 @@ if [ $? -eq 0 ]; then
   # Check if Docker build was successful
   if [ $? -eq 0 ]; then
     # Docker stop old instance
+    echo "Container Name: $CONTAINER_NAME"
     if sudo docker ps -a --format '{.Names}' | grep -Eq "^$CONTAINER_NAME$"; then
       echo "Stopping existing container: $CONTAINER_NAME"
       sudo docker stop "$CONTAINER_NAME" || true
