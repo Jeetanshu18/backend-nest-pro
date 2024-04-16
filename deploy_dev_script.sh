@@ -25,15 +25,15 @@ fi
 # Check if the previous operation was successful
 if [ $? -eq 0 ]; then
   # Docker build using folder name as image name
-  docker build --build-arg ENV="$ENV" -t "$IMAGE_NAME" .
+  sudo docker build --build-arg ENV="$ENV" -t "$IMAGE_NAME" .
   # Check if Docker build was successful
   if [ $? -eq 0 ]; then
     # Docker stop old instance
-    if docker ps -a --format '{.Names}' | grep -Eq "^$CONTAINER_NAME$"; then
+    if sudo docker ps -a --format '{.Names}' | grep -Eq "^$CONTAINER_NAME$"; then
       echo "Stopping existing container: $CONTAINER_NAME"
-      docker stop "$CONTAINER_NAME" || true
+      sudo docker stop "$CONTAINER_NAME" || true
       echo "Removing existing container: $CONTAINER_NAME"
-      docker rm "$CONTAINER_NAME" || true
+      sudo docker rm "$CONTAINER_NAME" || true
     else
       echo "docker container stop failed or container not exists"
     fi  
@@ -45,8 +45,8 @@ else
   echo "Git operation failed."
   exit 1
 fi
-  docker run -d --network=backend-nest-pro -p 3000:3000 --name "$CONTAINER_NAME" "$IMAGE_NAME"
+  sudo docker run -d --network=backend-nest-pro -p 3000:3000 --name "$CONTAINER_NAME" "$IMAGE_NAME"
 
-  docker images prune -a || true
+  sudo docker images prune -a || true
  # Docker run using folder name as container name
         
