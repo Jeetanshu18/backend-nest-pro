@@ -1,0 +1,49 @@
+name: Deploy to dev Server
+on:
+ push:
+  branches:
+    - dev
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install SSH and SSHPass
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y sshpass openssh-client
+
+    - name: Set up SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{secrets.SSH_PRIVATE_KEY_NODE_DEV}}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+    - name: Extract repo name
+      id: extract-repo-name
+      run: |
+        REPO_NAME=$(basename ${{github.repository}})
+        echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+
+    - name: Copy deploy_dev_script.sh to EC2
+      env:
+        EC2_HOST: 34.207.246.12
+        EC2_USER: ubuntu
+      run: |
+        ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+        scp -o StrictHostKeyChecking=no ./deploy_dev_script.sh $EC2_USER@$EC2_HOST:/home/$EC2_USER/
+
+    - name: Execute deploy_dev_script.sh on EC2
+      env:
+        EC2_HOST: 34.207.246.12
+        EC2_USER: ubuntu
+        REPO_SLUG: ${{env.REPO_NAME}}
+        COMMIT_HASH: ${{github.sha}}
+        BRANCH: ${{github.ref_name}}
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "bash /home/$EC2_USER/deploy_dev_script.sh $REPO_SLUG ${COMMIT_HASH:0:7} $BRANCH"
+        
