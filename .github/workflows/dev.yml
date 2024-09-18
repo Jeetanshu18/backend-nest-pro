@@ -46,4 +46,3 @@ jobs:
         BRANCH: ${{github.ref_name}}
       run: |
         ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "bash /home/$EC2_USER/deploy_dev_script.sh $REPO_SLUG ${COMMIT_HASH:0:7} $BRANCH"
-        
