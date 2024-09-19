@@ -34,7 +34,7 @@ jobs:
           echo "REPOS_NAME: $REPOS_NAME"
           ENV="${BRANCH_NAME}"
           if [[ ! -d "$REPOS_NAME" ]]; then
-            git clone git@github.com:DaffiDigital/DaffiOne-Backend-V3.git -b "$BRANCH_NAME" "$REPOS_NAME"
+            git clone git@github.com:Jeetanshu18/backend-nest-pro.git -b "$BRANCH_NAME" "$REPOS_NAME"
             cd "$REPOS_NAME"
           else
             cd "$REPOS_NAME"
@@ -64,4 +64,3 @@ jobs:
           fi
           sudo docker run -d --network=daffione -p 3000:3000 --name "$CONTAINER_NAME" "$IMAGE_NAME"
           sudo docker image prune -a -f || true
-
