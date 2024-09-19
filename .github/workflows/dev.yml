@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: ${{ github.ref_name }}
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -19,11 +18,11 @@ jobs:
         REPO_NAME: ${{ github.repository }}
         BRANCH_NAME: ${{ github.ref_name }}
       with:
-        host: 100.26.200.255
-        username: "ec2-user"
+        host: ${{ secrets.IP_ADDRESS }}
+        username: ${{ secrets.SSH_USER_NAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY_NODE_DEV }}
         port: ${{ secrets.PORT }}
-        envs: REPO_NAME,BRANCH_NAME
+        envs: REPO_NAME, BRANCH_NAME
         script: |
           echo "REPO_NAME: $REPO_NAME"
           echo "branch_name: $BRANCH_NAME"
@@ -34,7 +33,7 @@ jobs:
           echo "REPOS_NAME: $REPOS_NAME"
           ENV="${BRANCH_NAME}"
           if [[ ! -d "$REPOS_NAME" ]]; then
-            git clone git@github.com:Jeetanshu18/backend-nest-pro.git -b "$BRANCH_NAME" "$REPOS_NAME"
+            git clone git@github.com:"$REPO_NAME" -b "$BRANCH_NAME" "$REPOS_NAME"
             cd "$REPOS_NAME"
           else
             cd "$REPOS_NAME"
@@ -62,5 +61,5 @@ jobs:
             echo "Git operation failed."
             exit 1
           fi
-          sudo docker run -d --network=backend-nest-pro -p 3000:3000 --name "$CONTAINER_NAME" "$IMAGE_NAME"
+          sudo docker run -d --network="$REPOS_NAME" -p 3000:3000 --name "$CONTAINER_NAME" "$IMAGE_NAME"
           sudo docker image prune -a -f || true
