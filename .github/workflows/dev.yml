@@ -25,7 +25,7 @@ jobs:
         envs: REPO_NAME, BRANCH_NAME
         script: |
           echo "REPO_NAME: $REPO_NAME"
-          echo "branch_name: $BRANCH_NAME"
+          echo "branch_name: $BRANCH_NAME^^"
           echo "GITHUB_SHA: $GITHUB_SHA"
           GITHUB_SHA="${{ github.sha }}"
           REPOS_NAME=$(echo "$REPO_NAME" | cut -d'/' -f2)
