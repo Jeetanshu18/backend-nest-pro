@@ -62,5 +62,5 @@ jobs:
             echo "Git operation failed."
             exit 1
           fi
-          sudo docker run -d --network=daffione -p 3000:3000 --name "$CONTAINER_NAME" "$IMAGE_NAME"
+          sudo docker run -d --network=backend-nest-pro -p 3000:3000 --name "$CONTAINER_NAME" "$IMAGE_NAME"
           sudo docker image prune -a -f || true
